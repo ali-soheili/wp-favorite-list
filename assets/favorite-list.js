@@ -32,7 +32,7 @@
 	/* ---------- markup ---------- */
 
 	// Hand-written links (<a class="fl-favorite-btn"><img></a>) get the same wrapper
-	// as the PHP output, so the ring is always centred on the icon.
+	// as the PHP output, so the icon animates around its own centre.
 	function wrapIcons(root) {
 		(root || document).querySelectorAll(SELECTOR + ' img').forEach(function (img) {
 			if (img.parentNode.classList && img.parentNode.classList.contains('fl-icon-wrap')) { return; }

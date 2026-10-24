@@ -82,6 +82,12 @@ final class FL_Admin {
 			$out[ $key ] = isset( $input[ $key ] ) ? esc_url_raw( trim( wp_unslash( $input[ $key ] ) ) ) : '';
 		}
 
+		foreach ( array( 'icon_width', 'icon_height' ) as $key ) {
+			$out[ $key ] = isset( $input[ $key ] ) && '' !== $input[ $key ] ? max( 8, min( 200, absint( $input[ $key ] ) ) ) : 22;
+		}
+
+		$out['label'] = isset( $input['label'] ) ? sanitize_text_field( wp_unslash( $input['label'] ) ) : '';
+
 		// Keep the {current_url} placeholder intact while sanitizing.
 		$guest = isset( $input['guest_url'] ) ? trim( wp_unslash( $input['guest_url'] ) ) : '';
 		if ( '' !== $guest ) {
@@ -183,6 +189,35 @@ final class FL_Admin {
 		<form method="post" action="options.php">
 			<?php settings_fields( 'fl_settings_group' ); ?>
 
+			<h2><?php esc_html_e( 'Button', 'favorite-list' ); ?></h2>
+			<table class="form-table" role="presentation">
+				<tr>
+					<th scope="row"><label for="fl-label"><?php esc_html_e( 'Button text', 'favorite-list' ); ?></label></th>
+					<td>
+						<input type="text" id="fl-label" class="regular-text"
+							name="<?php echo esc_attr( $name . '[label]' ); ?>"
+							value="<?php echo esc_attr( $settings['label'] ); ?>"
+							placeholder="<?php esc_attr_e( 'Favorites', 'favorite-list' ); ?>">
+						<p class="description"><?php esc_html_e( 'Text shown next to the icon. Leave empty for the default.', 'favorite-list' ); ?></p>
+					</td>
+				</tr>
+				<tr>
+					<th scope="row"><?php esc_html_e( 'Icon size', 'favorite-list' ); ?></th>
+					<td>
+						<label>
+							<?php esc_html_e( 'Width', 'favorite-list' ); ?>
+							<input type="number" min="8" max="200" class="small-text" name="<?php echo esc_attr( $name . '[icon_width]' ); ?>" value="<?php echo (int) $settings['icon_width']; ?>">
+						</label>
+						&nbsp;
+						<label>
+							<?php esc_html_e( 'Height', 'favorite-list' ); ?>
+							<input type="number" min="8" max="200" class="small-text" name="<?php echo esc_attr( $name . '[icon_height]' ); ?>" value="<?php echo (int) $settings['icon_height']; ?>">
+						</label>
+						<?php esc_html_e( 'px', 'favorite-list' ); ?>
+					</td>
+				</tr>
+			</table>
+
 			<h2><?php esc_html_e( 'Icons', 'favorite-list' ); ?></h2>
 			<table class="form-table" role="presentation">
 				<?php foreach ( $icons as $key => $icon ) : ?>
@@ -200,7 +235,7 @@ final class FL_Admin {
 							</div>
 							<p class="description">
 								<?php echo esc_html( $icon['desc'] ); ?>
-								<?php esc_html_e( 'Leave empty to use the theme icon shown as placeholder.', 'favorite-list' ); ?>
+								<?php esc_html_e( 'Leave empty to use the plugin’s default heart icon.', 'favorite-list' ); ?>
 							</p>
 						</td>
 					</tr>
@@ -236,12 +271,12 @@ final class FL_Admin {
 
 	/* ---------- How to use ---------- */
 
-	/** Finds theme files that contain the favorite icon, so the admin knows where to paste the code. */
+	/** Theme files that already contain the favorite button (template tag, class or shortcode). */
 	private static function scan_theme() {
-		$dirs   = array_unique( array( get_stylesheet_directory(), get_template_directory() ) );
-		$found  = array();
-		$done   = false;
-		$count  = 0;
+		$dirs    = array_unique( array( get_stylesheet_directory(), get_template_directory() ) );
+		$needles = array( 'fl_favorite_button', 'fl-favorite-btn', '[favorite_button' );
+		$found   = array();
+		$count   = 0;
 
 		foreach ( $dirs as $dir ) {
 			if ( ! is_dir( $dir ) ) {
@@ -267,26 +302,24 @@ final class FL_Admin {
 					continue;
 				}
 				foreach ( $lines as $i => $line ) {
-					$is_icon = false !== strpos( $line, 'post-info-box/favorite.svg' );
-					$is_done = false !== strpos( $line, 'fl_favorite_button' ) || false !== strpos( $line, 'fl-favorite-btn' );
-					if ( $is_done ) {
-						$done = true;
-					}
-					if ( $is_icon || $is_done ) {
-						$found[] = array(
-							'file' => str_replace( wp_normalize_path( WP_CONTENT_DIR ), 'wp-content', wp_normalize_path( $file->getPathname() ) ),
-							'line' => $i + 1,
-							'done' => $is_done,
-						);
+					foreach ( $needles as $needle ) {
+						if ( false !== strpos( $line, $needle ) ) {
+							$found[] = array(
+								'file' => self::short_path( $file->getPathname() ),
+								'line' => $i + 1,
+							);
+							break;
+						}
 					}
 				}
 			}
 		}
 
-		return array(
-			'found' => $found,
-			'done'  => $done,
-		);
+		return $found;
+	}
+
+	private static function short_path( $path ) {
+		return str_replace( wp_normalize_path( WP_CONTENT_DIR ), 'wp-content', wp_normalize_path( $path ) );
 	}
 
 	private static function code_block( $code, $id ) {
@@ -299,70 +332,68 @@ final class FL_Admin {
 	}
 
 	private static function tab_usage() {
-		$scan   = self::scan_theme();
-		$single = str_replace( wp_normalize_path( WP_CONTENT_DIR ), 'wp-content', wp_normalize_path( get_template_directory() ) ) . '/single.php';
+		$found = self::scan_theme();
+		$theme = self::short_path( get_stylesheet_directory() ) . '/';
+		$size  = FL_Favorite_List::icon_size();
 
-		$original = '<a href="#">' . "\n" .
-			'    <img src="<?php bloginfo(\'template_url\'); ?>/images/post-info-box/favorite.svg" alt="favorite" width="23px" height="22px" >' . "\n" .
-			'    لیست علاقه مندی' . "\n" .
-			'</a>';
+		$template_tag = "<?php if ( function_exists( 'fl_favorite_button' ) ) fl_favorite_button(); ?>";
 
-		$recommended = "<?php if ( function_exists( 'fl_favorite_button' ) ) fl_favorite_button(); ?>";
-
-		$manual = '<a href="#" class="fl-favorite-btn" data-post-id="<?php the_ID(); ?>">' . "\n" .
-			'    <img src="<?php bloginfo(\'template_url\'); ?>/images/post-info-box/favorite.svg" alt="favorite" width="23" height="22">' . "\n" .
-			'    لیست علاقه مندی' . "\n" .
+		$custom_html = '<a href="#" class="fl-favorite-btn" data-post-id="<?php the_ID(); ?>">' . "\n" .
+			'    <img src="<?php echo esc_url( fl_get_icon_url() ); ?>" alt="" width="' . (int) $size[0] . '" height="' . (int) $size[1] . '">' . "\n" .
+			'    ' . FL_Favorite_List::i18n()['label'] . "\n" .
 			'</a>';
 		?>
-		<h2><?php esc_html_e( '1. Add the favorite button to the single post page', 'favorite-list' ); ?></h2>
-
-		<div class="fl-status <?php echo $scan['done'] ? 'is-ok' : ''; ?>">
-			<?php if ( $scan['done'] ) : ?>
-				<p><strong><?php esc_html_e( 'The favorite button is already in your theme.', 'favorite-list' ); ?></strong></p>
-			<?php elseif ( $scan['found'] ) : ?>
-				<p><strong><?php esc_html_e( 'The favorite icon was found in your theme here. This is where the code goes:', 'favorite-list' ); ?></strong></p>
-			<?php else : ?>
-				<p><strong><?php esc_html_e( 'The favorite icon was not found in the active theme. Put the code in the single post template:', 'favorite-list' ); ?></strong> <code dir="ltr"><?php echo esc_html( $single ); ?></code></p>
-			<?php endif; ?>
-
-			<?php if ( $scan['found'] ) : ?>
+		<div class="fl-status <?php echo $found ? 'is-ok' : ''; ?>">
+			<?php if ( $found ) : ?>
+				<p><strong><?php esc_html_e( 'The favorite button is in your theme:', 'favorite-list' ); ?></strong></p>
 				<ul>
-					<?php foreach ( $scan['found'] as $hit ) : ?>
+					<?php foreach ( $found as $hit ) : ?>
 						<li>
 							<code dir="ltr"><?php echo esc_html( $hit['file'] ); ?></code>
 							<?php
 							/* translators: %d: line number */
 							printf( esc_html__( 'line %d', 'favorite-list' ), (int) $hit['line'] );
 							?>
-							<?php if ( $hit['done'] ) : ?>
-								— <span class="fl-ok"><?php esc_html_e( 'done', 'favorite-list' ); ?></span>
-							<?php endif; ?>
 						</li>
 					<?php endforeach; ?>
 				</ul>
+			<?php else : ?>
+				<p><strong><?php esc_html_e( 'The favorite button hasn’t been added to your theme yet.', 'favorite-list' ); ?></strong>
+				<?php esc_html_e( 'Follow step 1 below, or use the shortcode inside your posts.', 'favorite-list' ); ?></p>
 			<?php endif; ?>
 		</div>
 
-		<ol class="fl-steps">
+		<h2><?php esc_html_e( '1. Show the favorite button', 'favorite-list' ); ?></h2>
+		<p><?php esc_html_e( 'Place this code in your theme where you want the button to appear:', 'favorite-list' ); ?></p>
+		<?php self::code_block( $template_tag, 'fl-code-tag' ); ?>
+		<ul class="fl-notes">
+			<li><?php esc_html_e( 'Put it inside the post loop. The usual place is the single post template: single.php, or a template part it loads such as template-parts/content-single.php. It also works in archive and blog templates, showing a button for each post.', 'favorite-list' ); ?></li>
+			<li><?php esc_html_e( 'If your theme already has a favorite or bookmark icon, replace that link with this code.', 'favorite-list' ); ?></li>
 			<li>
-				<?php esc_html_e( 'Open the single post template of your theme (usually single.php, or the template part it includes):', 'favorite-list' ); ?>
-				<code dir="ltr"><?php echo esc_html( $single ); ?></code>
+				<?php esc_html_e( 'Your active theme folder:', 'favorite-list' ); ?> <code dir="ltr"><?php echo esc_html( $theme ); ?></code>.
+				<?php esc_html_e( 'Use a child theme if you can, so a theme update doesn’t remove the code.', 'favorite-list' ); ?>
 			</li>
-			<li>
-				<?php esc_html_e( 'Find the current favorite link. It looks like this:', 'favorite-list' ); ?>
-				<?php self::code_block( $original, 'fl-code-original' ); ?>
-			</li>
-			<li>
-				<?php esc_html_e( 'Replace the whole link with this one line:', 'favorite-list' ); ?>
-				<?php self::code_block( $recommended, 'fl-code-recommended' ); ?>
-				<p class="description"><?php esc_html_e( 'It prints the same link and icon, already showing the right state, and uses the icons from the General tab. It must be inside the post loop (the single post page is fine).', 'favorite-list' ); ?></p>
-			</li>
-		</ol>
+			<li><?php esc_html_e( 'The button uses the text, icons and size from the General tab, and shows the right state for the logged-in user.', 'favorite-list' ); ?></li>
+		</ul>
+
+		<p><strong><?php esc_html_e( 'No access to theme files?', 'favorite-list' ); ?></strong>
+		<?php esc_html_e( 'Add this shortcode to a post, or to a widget or block template (Shortcode block):', 'favorite-list' ); ?></p>
+		<?php self::code_block( '[favorite_button]', 'fl-code-button-sc' ); ?>
 
 		<details class="fl-alt">
-			<summary><?php esc_html_e( 'Prefer to keep your own HTML?', 'favorite-list' ); ?></summary>
-			<p><?php esc_html_e( 'Add the class fl-favorite-btn and the post ID to your existing link. The plugin swaps the icon by itself.', 'favorite-list' ); ?></p>
-			<?php self::code_block( $manual, 'fl-code-manual' ); ?>
+			<summary><?php esc_html_e( 'Customize the button', 'favorite-list' ); ?></summary>
+
+			<p><?php esc_html_e( 'Icon only, without text:', 'favorite-list' ); ?></p>
+			<?php self::code_block( "<?php fl_favorite_button( null, array( 'label' => '' ) ); ?>", 'fl-code-icon-only' ); ?>
+
+			<p><?php esc_html_e( 'Different text and an extra CSS class:', 'favorite-list' ); ?></p>
+			<?php self::code_block( "<?php fl_favorite_button( null, array( 'label' => 'Save', 'class' => 'my-button' ) ); ?>", 'fl-code-args' ); ?>
+
+			<p><?php esc_html_e( 'A button for a specific post (outside the loop):', 'favorite-list' ); ?></p>
+			<?php self::code_block( '<?php fl_favorite_button( 123 ); ?>', 'fl-code-id' ); ?>
+
+			<p><?php esc_html_e( 'Your own HTML: give any link or button the class fl-favorite-btn and the post ID. The plugin handles the click and swaps the image inside it.', 'favorite-list' ); ?></p>
+			<?php self::code_block( $custom_html, 'fl-code-custom' ); ?>
 		</details>
 
 		<h2><?php esc_html_e( '2. Create the favorites page', 'favorite-list' ); ?></h2>
@@ -371,25 +402,34 @@ final class FL_Admin {
 			<a href="<?php echo esc_url( admin_url( 'post-new.php?post_type=page' ) ); ?>"><?php esc_html_e( 'Add a new page', 'favorite-list' ); ?></a>
 		</p>
 		<?php self::code_block( '[favorite_list]', 'fl-code-list' ); ?>
+		<p class="description">
+			<?php esc_html_e( 'Options:', 'favorite-list' ); ?>
+			<code dir="ltr">[favorite_list thumbnail="no"]</code>
+			<code dir="ltr">[favorite_list empty="…"]</code>
+		</p>
 
-		<h2><?php esc_html_e( 'Other options', 'favorite-list' ); ?></h2>
+		<h2><?php esc_html_e( 'For developers', 'favorite-list' ); ?></h2>
 		<table class="widefat striped fl-ref">
 			<tbody>
 				<tr>
-					<td><code dir="ltr">[favorite_button]</code></td>
-					<td><?php esc_html_e( 'The button inside post content or a widget.', 'favorite-list' ); ?></td>
-				</tr>
-				<tr>
-					<td><code dir="ltr">&lt;?php fl_favorite_button( 123 ); ?&gt;</code></td>
-					<td><?php esc_html_e( 'The button for a specific post ID (outside the loop).', 'favorite-list' ); ?></td>
-				</tr>
-				<tr>
-					<td><code dir="ltr">&lt;?php echo fl_favorite_count(); ?&gt;</code></td>
+					<td><code dir="ltr">fl_favorite_count()</code></td>
 					<td><?php esc_html_e( 'How many users added the current post to their favorites.', 'favorite-list' ); ?></td>
+				</tr>
+				<tr>
+					<td><code dir="ltr">fl_is_favorite( $post_id )</code></td>
+					<td><?php esc_html_e( 'Whether a post is in the current user’s favorites.', 'favorite-list' ); ?></td>
 				</tr>
 				<tr>
 					<td><code dir="ltr">fl_get_favorites()</code></td>
 					<td><?php esc_html_e( 'Array of the current user’s favorite post IDs, for custom templates.', 'favorite-list' ); ?></td>
+				</tr>
+				<tr>
+					<td><code dir="ltr">fl_get_icon_url( $active )</code></td>
+					<td><?php esc_html_e( 'URL of the normal or active icon.', 'favorite-list' ); ?></td>
+				</tr>
+				<tr>
+					<td><code dir="ltr">fl_post_types</code></td>
+					<td><?php esc_html_e( 'Filter: post types that can be favorited (default: posts).', 'favorite-list' ); ?></td>
 				</tr>
 			</tbody>
 		</table>

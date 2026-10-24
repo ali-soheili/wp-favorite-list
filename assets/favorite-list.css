@@ -1,7 +1,6 @@
 /* Favorite List */
 
 .fl-favorite-btn {
-	--fl-accent: #e5394d;
 	display: inline-flex;
 	align-items: center;
 	gap: 6px;
@@ -10,7 +9,7 @@
 	-webkit-tap-highlight-color: transparent;
 }
 
-/* The wrapper is exactly the size of the icon, so the ring is centred on it. */
+/* The wrapper is exactly the size of the icon, so it scales around its own centre. */
 .fl-favorite-btn .fl-icon-wrap {
 	position: relative;
 	display: inline-block;
@@ -27,60 +26,33 @@
 	transform-origin: 50% 50%;
 }
 
-/* Ring burst, centred with left/top 50% + translate (no margins to be overridden). */
-.fl-favorite-btn .fl-icon-wrap::after {
-	content: "";
-	position: absolute;
-	left: 50%;
-	top: 50%;
-	box-sizing: border-box;
-	width: 10px;
-	height: 10px;
-	margin: 0;
-	border: 2px solid var(--fl-accent);
-	border-radius: 50%;
-	opacity: 0;
-	transform: translate(-50%, -50%) scale(.4);
-	pointer-events: none;
-}
-
-/* Heart beat when added */
+/* Gentle heart beat when added */
 .fl-favorite-btn.fl-anim-beat .fl-icon-wrap img {
-	animation: fl-heartbeat .9s ease-in-out;
-}
-
-.fl-favorite-btn.fl-anim-beat .fl-icon-wrap::after {
-	animation: fl-pop .6s ease-out;
+	animation: fl-heartbeat .8s ease-in-out;
 }
 
 @keyframes fl-heartbeat {
 	0%   { transform: scale(1); }
-	14%  { transform: scale(1.35); }
-	28%  { transform: scale(1); }
-	42%  { transform: scale(1.25); }
-	70%  { transform: scale(1); }
+	18%  { transform: scale(1.15); }
+	36%  { transform: scale(1); }
+	54%  { transform: scale(1.1); }
+	80%  { transform: scale(1); }
 	100% { transform: scale(1); }
-}
-
-@keyframes fl-pop {
-	0%   { transform: translate(-50%, -50%) scale(.4); opacity: .9; }
-	100% { transform: translate(-50%, -50%) scale(4);  opacity: 0; }
 }
 
 /* Small shrink when removed */
 .fl-favorite-btn.fl-anim-unbeat .fl-icon-wrap img {
-	animation: fl-unbeat .35s ease-out;
+	animation: fl-unbeat .3s ease-out;
 }
 
 @keyframes fl-unbeat {
 	0%   { transform: scale(1); }
-	45%  { transform: scale(.7); }
+	45%  { transform: scale(.85); }
 	100% { transform: scale(1); }
 }
 
 @media (prefers-reduced-motion: reduce) {
-	.fl-favorite-btn .fl-icon-wrap img,
-	.fl-favorite-btn .fl-icon-wrap::after { animation: none !important; }
+	.fl-favorite-btn .fl-icon-wrap img { animation: none !important; }
 }
 
 /* ---------- [favorite_list] ---------- */

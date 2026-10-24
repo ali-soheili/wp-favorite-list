@@ -1,8 +1,8 @@
 <?php
 /**
  * Plugin Name:       Favorite List
- * Description:       Lets logged-in users add or remove posts from their favorites list (AJAX, heart-beat animation, [favorite_list] shortcode).
- * Version:           1.1.0
+ * Description:       Lets logged-in users add or remove posts from their favorites list (AJAX, heart-beat animation, settings page, [favorite_list] shortcode).
+ * Version:           1.2.0
  * Author:            A Soheili
  * Text Domain:       favorite-list
  * Domain Path:       /languages
@@ -13,7 +13,7 @@
 
 defined( 'ABSPATH' ) || exit;
 
-define( 'FL_VERSION', '1.1.0' );
+define( 'FL_VERSION', '1.2.0' );
 define( 'FL_FILE', __FILE__ );
 
 require_once __DIR__ . '/includes/class-fl-github-updater.php';
@@ -40,6 +40,7 @@ final class FL_Favorite_List {
 	const MAX_ITEMS = 1000;
 
 	public static function init() {
+		add_action( 'init', array( __CLASS__, 'maybe_upgrade' ) );
 		add_action( 'wp_enqueue_scripts', array( __CLASS__, 'enqueue' ) );
 		add_action( 'template_redirect', array( __CLASS__, 'maybe_disable_cache' ) );
 
@@ -56,8 +57,9 @@ final class FL_Favorite_List {
 	 * Settings
 	 * ---------------------------------------------------------------- */
 
+	/** The plugin's own heart icons, used when no icon is set in the settings. */
 	public static function default_icons() {
-		$base = get_template_directory_uri() . '/images/post-info-box/';
+		$base = plugin_dir_url( FL_FILE ) . 'assets/icons/';
 		return array(
 			'inactive' => $base . 'favorite.svg',
 			'active'   => $base . 'favorite-active.svg',
@@ -71,12 +73,38 @@ final class FL_Favorite_List {
 			array(
 				'icon_inactive' => '',
 				'icon_active'   => '',
+				'icon_width'    => 22,
+				'icon_height'   => 22,
+				'label'         => '',
 				'guest_url'     => '',
 			)
 		);
 	}
 
-	/** Icon URLs: admin setting, or the theme's icons when left empty. */
+	/**
+	 * One-time upgrade from 1.1.x, which used the theme's
+	 * images/post-info-box/favorite(-active).svg icons and a fixed Persian label.
+	 * If those theme icons exist, keep using them so nothing changes on that site.
+	 */
+	public static function maybe_upgrade() {
+		if ( get_option( 'fl_db_version' ) ) {
+			return;
+		}
+		update_option( 'fl_db_version', FL_VERSION );
+
+		$settings = self::get_settings();
+		$theme    = '/images/post-info-box/';
+		if ( ! $settings['icon_inactive'] && ! $settings['icon_active'] && file_exists( get_template_directory() . $theme . 'favorite.svg' ) ) {
+			$settings['icon_inactive'] = get_template_directory_uri() . $theme . 'favorite.svg';
+			$settings['icon_active']   = get_template_directory_uri() . $theme . 'favorite-active.svg';
+			$settings['icon_width']    = 23;
+			$settings['icon_height']   = 22;
+			$settings['label']         = $settings['label'] ? $settings['label'] : 'لیست علاقه مندی';
+			update_option( self::OPTION, $settings );
+		}
+	}
+
+	/** Icon URLs: admin setting, or the plugin's own icons when left empty. */
 	public static function icons() {
 		$settings = self::get_settings();
 		$defaults = self::default_icons();
@@ -106,18 +134,28 @@ final class FL_Favorite_List {
 		return (array) apply_filters( 'fl_post_types', array( 'post' ) );
 	}
 
-	/** Front-end texts (Persian by default). Change them with the fl_i18n filter. */
+	/** Icon size in px (width, height). */
+	public static function icon_size() {
+		$settings = self::get_settings();
+		return array(
+			max( 8, min( 200, (int) $settings['icon_width'] ) ),
+			max( 8, min( 200, (int) $settings['icon_height'] ) ),
+		);
+	}
+
+	/** Front-end texts. Translatable, and changeable with the fl_i18n filter. */
 	public static function i18n() {
+		$settings = self::get_settings();
 		return apply_filters(
 			'fl_i18n',
 			array(
-				'label'      => 'لیست علاقه مندی',
-				'add'        => 'افزودن به لیست علاقه مندی',
-				'remove'     => 'حذف از لیست علاقه مندی',
-				'login'      => 'برای استفاده از لیست علاقه مندی وارد حساب کاربری خود شوید',
-				'empty'      => 'هنوز مطلبی به لیست علاقه مندی اضافه نکرده‌اید.',
-				'need_login' => 'برای دیدن لیست علاقه مندی خود ابتدا وارد شوید.',
-				'login_link' => 'ورود به حساب کاربری',
+				'label'      => '' !== trim( $settings['label'] ) ? $settings['label'] : __( 'Favorites', 'favorite-list' ),
+				'add'        => __( 'Add to favorites', 'favorite-list' ),
+				'remove'     => __( 'Remove from favorites', 'favorite-list' ),
+				'login'      => __( 'Log in to use your favorites list', 'favorite-list' ),
+				'empty'      => __( 'You haven’t added anything to your favorites yet.', 'favorite-list' ),
+				'need_login' => __( 'Log in to see your favorites list.', 'favorite-list' ),
+				'login_link' => __( 'Log in', 'favorite-list' ),
 			)
 		);
 	}
@@ -268,13 +306,14 @@ final class FL_Favorite_List {
 
 		$i18n  = self::i18n();
 		$icons = self::icons();
+		$size  = self::icon_size();
 		$args  = wp_parse_args(
 			$args,
 			array(
 				'label'  => $i18n['label'],
 				'class'  => '',
-				'width'  => 23,
-				'height' => 22,
+				'width'  => $size[0],
+				'height' => $size[1],
 			)
 		);
 
@@ -285,8 +324,8 @@ final class FL_Favorite_List {
 
 		return sprintf(
 			'<a href="#" class="%1$s" data-post-id="%2$d" role="button" aria-pressed="%3$s" title="%4$s">' .
-				'<span class="fl-icon-wrap"><img class="fl-favorite-icon" src="%5$s" alt="favorite" width="%6$d" height="%7$d"></span>' .
-				' <span class="fl-favorite-label">%8$s</span>' .
+				'<span class="fl-icon-wrap"><img class="fl-favorite-icon" src="%5$s" alt="" width="%6$d" height="%7$d"></span>' .
+				'%8$s' .
 			'</a>',
 			esc_attr( $class ),
 			$post_id,
@@ -295,7 +334,7 @@ final class FL_Favorite_List {
 			esc_url( $active ? $icons['active'] : $icons['inactive'] ),
 			(int) $args['width'],
 			(int) $args['height'],
-			esc_html( $args['label'] )
+			'' !== $args['label'] ? ' <span class="fl-favorite-label">' . esc_html( $args['label'] ) . '</span>' : ''
 		);
 	}
 
@@ -353,6 +392,7 @@ final class FL_Favorite_List {
 		}
 
 		$icons = self::icons();
+		$size  = self::icon_size();
 
 		ob_start();
 		?>
@@ -372,7 +412,7 @@ final class FL_Favorite_List {
 								<span class="fl-item-date"><?php echo esc_html( get_the_date( '', $p ) ); ?></span>
 							</div>
 							<button type="button" class="fl-favorite-btn fl-item-remove is-active" data-post-id="<?php echo (int) $p->ID; ?>" aria-pressed="true" title="<?php echo esc_attr( $i18n['remove'] ); ?>" aria-label="<?php echo esc_attr( $i18n['remove'] ); ?>">
-								<span class="fl-icon-wrap"><img class="fl-favorite-icon" src="<?php echo esc_url( $icons['active'] ); ?>" alt="" width="23" height="22"></span>
+								<span class="fl-icon-wrap"><img class="fl-favorite-icon" src="<?php echo esc_url( $icons['active'] ); ?>" alt="" width="<?php echo (int) $size[0]; ?>" height="<?php echo (int) $size[1]; ?>"></span>
 							</button>
 						</li>
 					<?php endforeach; ?>
@@ -403,6 +443,12 @@ function fl_get_favorites( $user_id = null ) {
 /** Whether a post is in the current user's favorites. */
 function fl_is_favorite( $post_id = null ) {
 	return FL_Favorite_List::is_favorite( $post_id );
+}
+
+/** URL of the normal (or active) icon, for hand-written buttons. */
+function fl_get_icon_url( $active = false ) {
+	$icons = FL_Favorite_List::icons();
+	return $active ? $icons['active'] : $icons['inactive'];
 }
 
 /** How many users have favorited a post. */

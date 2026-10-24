@@ -1,6 +1,6 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: Favorite List 1.1.0\n"
+"Project-Id-Version: Favorite List 1.2.0\n"
 "Language: fa_IR\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -113,9 +113,6 @@ msgstr "آیکون‌ها"
 msgid "Media Library"
 msgstr "کتابخانه رسانه"
 
-msgid "Leave empty to use the theme icon shown as placeholder."
-msgstr "برای استفاده از آیکون پوسته (که به‌صورت پیش‌فرض نمایش داده شده) خالی بگذارید."
-
 msgid "Visitors who are not logged in"
 msgstr "بازدیدکنندگانی که وارد نشده‌اند"
 
@@ -131,41 +128,8 @@ msgstr "برای استفاده از صفحه ورود وردپرس خالی ب�
 msgid "Use %s in the address to insert the page the visitor was on, e.g."
 msgstr "برای قرار دادن آدرس صفحه‌ای که بازدیدکننده در آن بود از %s در آدرس استفاده کنید، مثلاً"
 
-msgid "1. Add the favorite button to the single post page"
-msgstr "۱. افزودن دکمه علاقه مندی به صفحه نوشته"
-
-msgid "The favorite button is already in your theme."
-msgstr "دکمه علاقه مندی در پوسته شما قرار گرفته است."
-
-msgid "The favorite icon was found in your theme here. This is where the code goes:"
-msgstr "آیکون علاقه مندی در این قسمت پوسته پیدا شد. کد باید همین‌جا قرار بگیرد:"
-
-msgid "The favorite icon was not found in the active theme. Put the code in the single post template:"
-msgstr "آیکون علاقه مندی در پوسته فعال پیدا نشد. کد را در قالب صفحه نوشته قرار دهید:"
-
 msgid "line %d"
 msgstr "خط %d"
-
-msgid "done"
-msgstr "انجام شده"
-
-msgid "Open the single post template of your theme (usually single.php, or the template part it includes):"
-msgstr "قالب صفحه نوشته پوسته را باز کنید (معمولاً single.php یا بخشی که در آن فراخوانی می‌شود):"
-
-msgid "Find the current favorite link. It looks like this:"
-msgstr "لینک فعلی علاقه مندی را پیدا کنید. چیزی شبیه این است:"
-
-msgid "Replace the whole link with this one line:"
-msgstr "کل لینک را با این یک خط جایگزین کنید:"
-
-msgid "It prints the same link and icon, already showing the right state, and uses the icons from the General tab. It must be inside the post loop (the single post page is fine)."
-msgstr "همان لینک و آیکون را با وضعیت درست نمایش می‌دهد و از آیکون‌های تب «عمومی» استفاده می‌کند. باید داخل حلقه نوشته باشد (صفحه نوشته مشکلی ندارد)."
-
-msgid "Prefer to keep your own HTML?"
-msgstr "می‌خواهید HTML خودتان را نگه دارید؟"
-
-msgid "Add the class fl-favorite-btn and the post ID to your existing link. The plugin swaps the icon by itself."
-msgstr "کلاس fl-favorite-btn و شناسه نوشته را به لینک فعلی اضافه کنید. افزونه خودش آیکون را عوض می‌کند."
 
 msgid "2. Create the favorites page"
 msgstr "۲. ساخت صفحه لیست علاقه مندی"
@@ -175,15 +139,6 @@ msgstr "یک برگه بسازید (مثلاً «علاقه مندی‌های م
 
 msgid "Add a new page"
 msgstr "افزودن برگه جدید"
-
-msgid "Other options"
-msgstr "گزینه‌های دیگر"
-
-msgid "The button inside post content or a widget."
-msgstr "دکمه داخل محتوای نوشته یا ابزارک."
-
-msgid "The button for a specific post ID (outside the loop)."
-msgstr "دکمه برای یک نوشته مشخص با شناسه (بیرون از حلقه)."
 
 msgid "How many users added the current post to their favorites."
 msgstr "تعداد کاربرانی که این نوشته را به لیست علاقه مندی اضافه کرده‌اند."
@@ -265,4 +220,115 @@ msgstr "ذخیره تغییرات"
 
 msgid "Sorry, you are not allowed to update plugins."
 msgstr "شما اجازه به‌روزرسانی افزونه‌ها را ندارید."
+
+msgid "Favorites"
+msgstr "لیست علاقه مندی"
+
+msgid "Add to favorites"
+msgstr "افزودن به لیست علاقه مندی"
+
+msgid "Remove from favorites"
+msgstr "حذف از لیست علاقه مندی"
+
+msgid "Log in to use your favorites list"
+msgstr "برای استفاده از لیست علاقه مندی وارد حساب کاربری خود شوید"
+
+msgid "You haven’t added anything to your favorites yet."
+msgstr "هنوز مطلبی به لیست علاقه مندی اضافه نکرده‌اید."
+
+msgid "Log in to see your favorites list."
+msgstr "برای دیدن لیست علاقه مندی خود ابتدا وارد شوید."
+
+msgid "Log in"
+msgstr "ورود به حساب کاربری"
+
+msgid "Button"
+msgstr "دکمه"
+
+msgid "Button text"
+msgstr "متن دکمه"
+
+msgid "Text shown next to the icon. Leave empty for the default."
+msgstr "متنی که کنار آیکون نمایش داده می‌شود. برای متن پیش‌فرض خالی بگذارید."
+
+msgid "Icon size"
+msgstr "اندازه آیکون"
+
+msgid "Width"
+msgstr "عرض"
+
+msgid "Height"
+msgstr "ارتفاع"
+
+msgid "px"
+msgstr "پیکسل"
+
+msgid "Leave empty to use the plugin’s default heart icon."
+msgstr "برای استفاده از آیکون قلب پیش‌فرض افزونه خالی بگذارید."
+
+msgid "The favorite button is in your theme:"
+msgstr "دکمه علاقه مندی در این قسمت‌های پوسته شما قرار دارد:"
+
+msgid "The favorite button hasn’t been added to your theme yet."
+msgstr "دکمه علاقه مندی هنوز به پوسته شما اضافه نشده است."
+
+msgid "Follow step 1 below, or use the shortcode inside your posts."
+msgstr "مرحله ۱ را دنبال کنید یا از کد کوتاه داخل نوشته‌ها استفاده کنید."
+
+msgid "1. Show the favorite button"
+msgstr "۱. نمایش دکمه علاقه مندی"
+
+msgid "Place this code in your theme where you want the button to appear:"
+msgstr "این کد را در هر جای پوسته که می‌خواهید دکمه نمایش داده شود قرار دهید:"
+
+msgid "Put it inside the post loop. The usual place is the single post template: single.php, or a template part it loads such as template-parts/content-single.php. It also works in archive and blog templates, showing a button for each post."
+msgstr "کد را داخل حلقه نوشته قرار دهید. معمولاً جای آن قالب صفحه نوشته است: single.php یا بخشی که در آن فراخوانی می‌شود، مثل template-parts/content-single.php. در قالب‌های آرشیو و وبلاگ هم کار می‌کند و برای هر نوشته یک دکمه نمایش می‌دهد."
+
+msgid "If your theme already has a favorite or bookmark icon, replace that link with this code."
+msgstr "اگر پوسته شما از قبل آیکون علاقه مندی یا نشانک دارد، آن لینک را با این کد جایگزین کنید."
+
+msgid "Your active theme folder:"
+msgstr "پوشه پوسته فعال شما:"
+
+msgid "Use a child theme if you can, so a theme update doesn’t remove the code."
+msgstr "در صورت امکان از پوسته فرزند استفاده کنید تا با به‌روزرسانی پوسته، کد حذف نشود."
+
+msgid "The button uses the text, icons and size from the General tab, and shows the right state for the logged-in user."
+msgstr "دکمه از متن، آیکون‌ها و اندازه تب «عمومی» استفاده می‌کند و وضعیت درست را برای کاربر واردشده نمایش می‌دهد."
+
+msgid "No access to theme files?"
+msgstr "به فایل‌های پوسته دسترسی ندارید؟"
+
+msgid "Add this shortcode to a post, or to a widget or block template (Shortcode block):"
+msgstr "این کد کوتاه را در یک نوشته، ابزارک یا قالب بلوکی (بلوک کد کوتاه) قرار دهید:"
+
+msgid "Customize the button"
+msgstr "سفارشی‌سازی دکمه"
+
+msgid "Icon only, without text:"
+msgstr "فقط آیکون، بدون متن:"
+
+msgid "Different text and an extra CSS class:"
+msgstr "متن دیگر و یک کلاس CSS اضافه:"
+
+msgid "A button for a specific post (outside the loop):"
+msgstr "دکمه برای یک نوشته مشخص (بیرون از حلقه):"
+
+msgid "Your own HTML: give any link or button the class fl-favorite-btn and the post ID. The plugin handles the click and swaps the image inside it."
+msgstr "HTML دلخواه: به هر لینک یا دکمه‌ای کلاس fl-favorite-btn و شناسه نوشته را بدهید. افزونه کلیک را مدیریت می‌کند و تصویر داخل آن را عوض می‌کند."
+
+msgid "Options:"
+msgstr "گزینه‌ها:"
+
+msgid "For developers"
+msgstr "برای توسعه‌دهندگان"
+
+msgid "Whether a post is in the current user’s favorites."
+msgstr "آیا نوشته در لیست علاقه مندی کاربر فعلی هست یا نه."
+
+msgid "URL of the normal or active icon."
+msgstr "آدرس آیکون عادی یا فعال."
+
+msgid "Filter: post types that can be favorited (default: posts)."
+msgstr "فیلتر: نوع‌های نوشته‌ای که می‌توانند به علاقه مندی اضافه شوند (پیش‌فرض: نوشته‌ها)."
 

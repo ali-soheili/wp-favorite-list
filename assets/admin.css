@@ -107,3 +107,17 @@
 
 .fl-ok { color: #008a20; }
 .fl-error { color: #b32d2e; }
+
+.fl-notes {
+	list-style: disc;
+	margin-inline-start: 20px;
+	max-width: 860px;
+}
+
+.fl-alt {
+	max-width: 960px;
+}
+
+.fl-alt p {
+	margin: 14px 0 4px;
+}
