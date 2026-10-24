@@ -1,0 +1,268 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Favorite List 1.1.0\n"
+"Language: fa_IR\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"X-Domain: favorite-list\n"
+
+msgid "Repository, branch or release not found. If the repository is private, add an access token."
+msgstr "مخزن، شاخه یا انتشار پیدا نشد. اگر مخزن خصوصی است، توکن دسترسی را وارد کنید."
+
+msgid "The GitHub access token is invalid or expired."
+msgstr "توکن دسترسی گیت‌هاب نامعتبر است یا منقضی شده است."
+
+msgid "GitHub API rate limit reached. Try again later or add an access token."
+msgstr "به سقف درخواست‌های API گیت‌هاب رسیدید. بعداً دوباره تلاش کنید یا توکن دسترسی وارد کنید."
+
+msgid "GitHub returned HTTP %1$d. %2$s"
+msgstr "گیت‌هاب کد HTTP %1$d برگرداند. %2$s"
+
+msgid "Checking GitHub for updates is turned off."
+msgstr "بررسی به‌روزرسانی از گیت‌هاب خاموش است."
+
+msgid "Outgoing requests to GitHub are blocked on this site (WP_HTTP_BLOCK_EXTERNAL)."
+msgstr "درخواست‌های خروجی به گیت‌هاب در این سایت مسدود است (WP_HTTP_BLOCK_EXTERNAL)."
+
+msgid "Could not read the Version header from the plugin file on GitHub."
+msgstr "خواندن شماره نسخه از فایل افزونه در گیت‌هاب ممکن نشد."
+
+msgid "Recent changes"
+msgstr "تغییرات اخیر"
+
+msgid "No published release found on GitHub."
+msgstr "هیچ انتشار منتشرشده‌ای در گیت‌هاب پیدا نشد."
+
+msgid "View on GitHub"
+msgstr "مشاهده در گیت‌هاب"
+
+msgid "See the GitHub repository for changes."
+msgstr "برای دیدن تغییرات به مخزن گیت‌هاب مراجعه کنید."
+
+msgid "GitHub did not return a download location."
+msgstr "گیت‌هاب آدرس دانلود را برنگرداند."
+
+msgid "Could not save the downloaded update."
+msgstr "ذخیره به‌روزرسانی دانلودشده ممکن نشد."
+
+msgid "Download from GitHub failed (HTTP %d)."
+msgstr "دانلود از گیت‌هاب ناموفق بود (HTTP %d)."
+
+msgid "The downloaded package does not contain the Favorite List plugin file."
+msgstr "بسته دانلودشده فایل افزونه لیست علاقه مندی را ندارد."
+
+msgid "Could not rename the update folder."
+msgstr "تغییر نام پوشه به‌روزرسانی ممکن نشد."
+
+msgid "Check for updates"
+msgstr "بررسی به‌روزرسانی"
+
+msgid "Favorite List"
+msgstr "لیست علاقه مندی"
+
+msgid "Settings"
+msgstr "تنظیمات"
+
+msgid "Choose icon"
+msgstr "انتخاب آیکون"
+
+msgid "Use this icon"
+msgstr "استفاده از این آیکون"
+
+msgid "Copied!"
+msgstr "کپی شد!"
+
+msgid "Copy"
+msgstr "کپی"
+
+msgid "General"
+msgstr "عمومی"
+
+msgid "How to use"
+msgstr "راهنمای استفاده"
+
+msgid "Updates"
+msgstr "به‌روزرسانی"
+
+msgid "Update settings saved."
+msgstr "تنظیمات به‌روزرسانی ذخیره شد."
+
+msgid "Checked GitHub for updates."
+msgstr "به‌روزرسانی‌ها از گیت‌هاب بررسی شد."
+
+msgid "Normal icon"
+msgstr "آیکون عادی"
+
+msgid "Shown when the post is not in the user’s favorites."
+msgstr "وقتی نوشته در لیست علاقه مندی کاربر نیست نمایش داده می‌شود."
+
+msgid "Active icon"
+msgstr "آیکون فعال"
+
+msgid "Shown when the post is in the user’s favorites."
+msgstr "وقتی نوشته در لیست علاقه مندی کاربر است نمایش داده می‌شود."
+
+msgid "Settings saved."
+msgstr "تنظیمات ذخیره شد."
+
+msgid "Icons"
+msgstr "آیکون‌ها"
+
+msgid "Media Library"
+msgstr "کتابخانه رسانه"
+
+msgid "Leave empty to use the theme icon shown as placeholder."
+msgstr "برای استفاده از آیکون پوسته (که به‌صورت پیش‌فرض نمایش داده شده) خالی بگذارید."
+
+msgid "Visitors who are not logged in"
+msgstr "بازدیدکنندگانی که وارد نشده‌اند"
+
+msgid "Redirect to"
+msgstr "انتقال به"
+
+msgid "Only logged-in users can use the favorites list. Visitors who click the icon are sent to this address."
+msgstr "فقط کاربران واردشده می‌توانند از لیست علاقه مندی استفاده کنند. بازدیدکنندگانی که روی آیکون کلیک کنند به این آدرس منتقل می‌شوند."
+
+msgid "Leave empty to use the WordPress login page; after logging in they come back to the same post."
+msgstr "برای استفاده از صفحه ورود وردپرس خالی بگذارید؛ بعد از ورود به همان نوشته برمی‌گردند."
+
+msgid "Use %s in the address to insert the page the visitor was on, e.g."
+msgstr "برای قرار دادن آدرس صفحه‌ای که بازدیدکننده در آن بود از %s در آدرس استفاده کنید، مثلاً"
+
+msgid "1. Add the favorite button to the single post page"
+msgstr "۱. افزودن دکمه علاقه مندی به صفحه نوشته"
+
+msgid "The favorite button is already in your theme."
+msgstr "دکمه علاقه مندی در پوسته شما قرار گرفته است."
+
+msgid "The favorite icon was found in your theme here. This is where the code goes:"
+msgstr "آیکون علاقه مندی در این قسمت پوسته پیدا شد. کد باید همین‌جا قرار بگیرد:"
+
+msgid "The favorite icon was not found in the active theme. Put the code in the single post template:"
+msgstr "آیکون علاقه مندی در پوسته فعال پیدا نشد. کد را در قالب صفحه نوشته قرار دهید:"
+
+msgid "line %d"
+msgstr "خط %d"
+
+msgid "done"
+msgstr "انجام شده"
+
+msgid "Open the single post template of your theme (usually single.php, or the template part it includes):"
+msgstr "قالب صفحه نوشته پوسته را باز کنید (معمولاً single.php یا بخشی که در آن فراخوانی می‌شود):"
+
+msgid "Find the current favorite link. It looks like this:"
+msgstr "لینک فعلی علاقه مندی را پیدا کنید. چیزی شبیه این است:"
+
+msgid "Replace the whole link with this one line:"
+msgstr "کل لینک را با این یک خط جایگزین کنید:"
+
+msgid "It prints the same link and icon, already showing the right state, and uses the icons from the General tab. It must be inside the post loop (the single post page is fine)."
+msgstr "همان لینک و آیکون را با وضعیت درست نمایش می‌دهد و از آیکون‌های تب «عمومی» استفاده می‌کند. باید داخل حلقه نوشته باشد (صفحه نوشته مشکلی ندارد)."
+
+msgid "Prefer to keep your own HTML?"
+msgstr "می‌خواهید HTML خودتان را نگه دارید؟"
+
+msgid "Add the class fl-favorite-btn and the post ID to your existing link. The plugin swaps the icon by itself."
+msgstr "کلاس fl-favorite-btn و شناسه نوشته را به لینک فعلی اضافه کنید. افزونه خودش آیکون را عوض می‌کند."
+
+msgid "2. Create the favorites page"
+msgstr "۲. ساخت صفحه لیست علاقه مندی"
+
+msgid "Create a page (e.g. “My favorites”) and put this shortcode in it. It lists the user’s favorite posts, each with a heart to remove it."
+msgstr "یک برگه بسازید (مثلاً «علاقه مندی‌های من») و این کد کوتاه را در آن قرار دهید. نوشته‌های مورد علاقه کاربر را نمایش می‌دهد و هر کدام یک قلب برای حذف دارد."
+
+msgid "Add a new page"
+msgstr "افزودن برگه جدید"
+
+msgid "Other options"
+msgstr "گزینه‌های دیگر"
+
+msgid "The button inside post content or a widget."
+msgstr "دکمه داخل محتوای نوشته یا ابزارک."
+
+msgid "The button for a specific post ID (outside the loop)."
+msgstr "دکمه برای یک نوشته مشخص با شناسه (بیرون از حلقه)."
+
+msgid "How many users added the current post to their favorites."
+msgstr "تعداد کاربرانی که این نوشته را به لیست علاقه مندی اضافه کرده‌اند."
+
+msgid "Array of the current user’s favorite post IDs, for custom templates."
+msgstr "آرایه شناسه نوشته‌های مورد علاقه کاربر فعلی، برای قالب‌های سفارشی."
+
+msgid "Update status"
+msgstr "وضعیت به‌روزرسانی"
+
+msgid "Installed version"
+msgstr "نسخه نصب‌شده"
+
+msgid "Latest version on GitHub"
+msgstr "آخرین نسخه در گیت‌هاب"
+
+msgid "Update checks are turned off."
+msgstr "بررسی به‌روزرسانی خاموش است."
+
+msgid "Update now"
+msgstr "به‌روزرسانی"
+
+msgid "You are up to date."
+msgstr "افزونه به‌روز است."
+
+msgid "Not checked yet."
+msgstr "هنوز بررسی نشده است."
+
+msgid "Last checked %s ago."
+msgstr "آخرین بررسی: %s پیش."
+
+msgid "Check for updates now"
+msgstr "بررسی به‌روزرسانی"
+
+msgid "GitHub source"
+msgstr "منبع گیت‌هاب"
+
+msgid "Update checks"
+msgstr "بررسی به‌روزرسانی"
+
+msgid "Check GitHub for new versions"
+msgstr "بررسی نسخه‌های جدید در گیت‌هاب"
+
+msgid "Turn this off on sites without internet access (e.g. a private network). The plugin works fully without it."
+msgstr "در سایت‌های بدون دسترسی به اینترنت (مثلاً شبکه داخلی) این گزینه را خاموش کنید. افزونه بدون آن کاملاً کار می‌کند."
+
+msgid "Repository"
+msgstr "مخزن"
+
+msgid "Format: owner/repository"
+msgstr "قالب: owner/repository"
+
+msgid "Update source"
+msgstr "منبع به‌روزرسانی"
+
+msgid "Branch: offer an update whenever the Version in the plugin file on the branch is higher"
+msgstr "شاخه: هر وقت نسخه فایل افزونه در شاخه بالاتر بود، به‌روزرسانی پیشنهاد شود"
+
+msgid "Releases: offer an update only when a new GitHub Release is published"
+msgstr "انتشارها: فقط وقتی یک Release جدید در گیت‌هاب منتشر شد، به‌روزرسانی پیشنهاد شود"
+
+msgid "Branch"
+msgstr "شاخه"
+
+msgid "Access token"
+msgstr "توکن دسترسی"
+
+msgid "Saved — leave empty to keep"
+msgstr "ذخیره شده — برای حفظ آن خالی بگذارید"
+
+msgid "Remove saved token"
+msgstr "حذف توکن ذخیره‌شده"
+
+msgid "Only needed if the repository is private. Use a fine-grained token with read-only “Contents” access to this repository."
+msgstr "فقط برای مخزن خصوصی لازم است. یک توکن fine-grained با دسترسی فقط‌خواندنی «Contents» به این مخزن بسازید."
+
+msgid "Save Changes"
+msgstr "ذخیره تغییرات"
+
+msgid "Sorry, you are not allowed to update plugins."
+msgstr "شما اجازه به‌روزرسانی افزونه‌ها را ندارید."
+

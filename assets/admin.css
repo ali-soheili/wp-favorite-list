@@ -1,0 +1,109 @@
+/* Favorite List — settings page */
+
+.fl-settings-panel {
+	max-width: 960px;
+	margin-top: 16px;
+}
+
+.fl-icon-field {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+	max-width: 720px;
+}
+
+.fl-icon-preview {
+	flex: none;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: 44px;
+	height: 44px;
+	background: #fff;
+	border: 1px solid #c3c4c7;
+	border-radius: 6px;
+}
+
+.fl-icon-preview img {
+	max-width: 28px;
+	max-height: 28px;
+}
+
+.fl-icon-field .fl-icon-input {
+	flex: 1;
+	min-width: 0;
+}
+
+.fl-status {
+	background: #fff;
+	border: 1px solid #c3c4c7;
+	border-inline-start: 4px solid #dba617;
+	padding: 4px 14px;
+	margin: 12px 0 20px;
+}
+
+.fl-status.is-ok {
+	border-inline-start-color: #00a32a;
+}
+
+.fl-status ul {
+	margin: 0 0 10px;
+}
+
+.fl-steps > li {
+	margin-bottom: 18px;
+}
+
+.fl-steps code,
+.fl-status code {
+	unicode-bidi: embed;
+}
+
+.fl-code {
+	position: relative;
+	margin: 8px 0;
+}
+
+.fl-code pre {
+	margin: 0;
+	padding: 14px 16px;
+	padding-right: 80px;
+	background: #1d2327;
+	color: #f0f0f1;
+	border-radius: 6px;
+	overflow-x: auto;
+	text-align: left;
+	font-size: 13px;
+	line-height: 1.6;
+}
+
+.fl-code pre code {
+	background: none;
+	color: inherit;
+	padding: 0;
+	font-size: inherit;
+}
+
+.fl-code .fl-copy {
+	position: absolute;
+	top: 8px;
+	right: 8px;
+}
+
+.fl-alt {
+	margin: 0 0 24px;
+}
+
+.fl-alt summary {
+	cursor: pointer;
+	font-weight: 600;
+}
+
+.fl-ref td:first-child {
+	width: 40%;
+	white-space: nowrap;
+	direction: ltr;
+}
+
+.fl-ok { color: #008a20; }
+.fl-error { color: #b32d2e; }

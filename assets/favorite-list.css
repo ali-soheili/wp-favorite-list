@@ -1,0 +1,144 @@
+/* Favorite List */
+
+.fl-favorite-btn {
+	--fl-accent: #e5394d;
+	display: inline-flex;
+	align-items: center;
+	gap: 6px;
+	cursor: pointer;
+	user-select: none;
+	-webkit-tap-highlight-color: transparent;
+}
+
+/* The wrapper is exactly the size of the icon, so the ring is centred on it. */
+.fl-favorite-btn .fl-icon-wrap {
+	position: relative;
+	display: inline-block;
+	flex: none;
+	margin: 0;
+	padding: 0;
+	line-height: 0;
+	vertical-align: middle;
+}
+
+.fl-favorite-btn .fl-icon-wrap img {
+	display: block;
+	margin: 0;
+	transform-origin: 50% 50%;
+}
+
+/* Ring burst, centred with left/top 50% + translate (no margins to be overridden). */
+.fl-favorite-btn .fl-icon-wrap::after {
+	content: "";
+	position: absolute;
+	left: 50%;
+	top: 50%;
+	box-sizing: border-box;
+	width: 10px;
+	height: 10px;
+	margin: 0;
+	border: 2px solid var(--fl-accent);
+	border-radius: 50%;
+	opacity: 0;
+	transform: translate(-50%, -50%) scale(.4);
+	pointer-events: none;
+}
+
+/* Heart beat when added */
+.fl-favorite-btn.fl-anim-beat .fl-icon-wrap img {
+	animation: fl-heartbeat .9s ease-in-out;
+}
+
+.fl-favorite-btn.fl-anim-beat .fl-icon-wrap::after {
+	animation: fl-pop .6s ease-out;
+}
+
+@keyframes fl-heartbeat {
+	0%   { transform: scale(1); }
+	14%  { transform: scale(1.35); }
+	28%  { transform: scale(1); }
+	42%  { transform: scale(1.25); }
+	70%  { transform: scale(1); }
+	100% { transform: scale(1); }
+}
+
+@keyframes fl-pop {
+	0%   { transform: translate(-50%, -50%) scale(.4); opacity: .9; }
+	100% { transform: translate(-50%, -50%) scale(4);  opacity: 0; }
+}
+
+/* Small shrink when removed */
+.fl-favorite-btn.fl-anim-unbeat .fl-icon-wrap img {
+	animation: fl-unbeat .35s ease-out;
+}
+
+@keyframes fl-unbeat {
+	0%   { transform: scale(1); }
+	45%  { transform: scale(.7); }
+	100% { transform: scale(1); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.fl-favorite-btn .fl-icon-wrap img,
+	.fl-favorite-btn .fl-icon-wrap::after { animation: none !important; }
+}
+
+/* ---------- [favorite_list] ---------- */
+
+.fl-list {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+}
+
+.fl-item {
+	display: flex;
+	align-items: center;
+	gap: 14px;
+	padding: 12px 0;
+	border-bottom: 1px solid rgba(0, 0, 0, .08);
+	transition: opacity .35s ease, transform .35s ease;
+}
+
+.fl-item.is-removing {
+	opacity: 0;
+	transform: translateX(20px);
+}
+
+.fl-item-thumb img {
+	display: block;
+	width: 72px;
+	height: 72px;
+	object-fit: cover;
+	border-radius: 8px;
+}
+
+.fl-item-body {
+	flex: 1;
+	min-width: 0;
+	display: flex;
+	flex-direction: column;
+	gap: 4px;
+}
+
+.fl-item-title {
+	font-weight: 600;
+	text-decoration: none;
+}
+
+.fl-item-date {
+	font-size: .85em;
+	opacity: .65;
+}
+
+.fl-item-remove {
+	background: none;
+	border: 0;
+	padding: 6px;
+	line-height: 0;
+}
+
+.fl-empty,
+.fl-need-login {
+	opacity: .8;
+}
